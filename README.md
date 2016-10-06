@@ -1,5 +1,5 @@
-** DSP Filters
+** DSP Fx
 
-Learning/playing around with filters in C++
+Learning/playing around with audio effects in C++
 
 
