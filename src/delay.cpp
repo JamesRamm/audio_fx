@@ -13,22 +13,22 @@ ramshackle::Delay::Delay()
 
 ramshackle::Delay::~Delay(){};
 
-ramshackle::Delay::setSampleRate(int samplesPerSecond){
+void ramshackle::Delay::setSampleRate(int samplesPerSecond){
     this->samplesPerMs = samplesPerSecond * 10E-3;
 }
 
-ramshackle::Delay::setDelayMs(double ms){
-    this->delayInSamples = ms * this->samplesPerMs;
+void ramshackle::Delay::setDelayMs(double ms){
+    this->delayInSamples = (int)(ms * this->samplesPerMs);
     this->buffer.resize(this->delayInSamples, 0.0);
 }
 
-ramshackle::Delay::process(std::vector<double> &input, std::vector<double> &output){
+void ramshackle::Delay::process(std::vector<double> &input, std::vector<double> &output){
 
     int i, tmpBufferPos;
-    int input_tail = input.size - delayInSamples;
+    int input_tail = input.size() - delayInSamples;
 
     tmpBufferPos = this->bufferPos;
-    for (i = 0; i < input.size; ++i){
+    for (i = 0; i < input.size(); ++i){
         output[i] = this->buffer[tmpBufferPos];
         this->buffer[tmpBufferPos] = input[i];
         tmpBufferPos++;
@@ -36,7 +36,7 @@ ramshackle::Delay::process(std::vector<double> &input, std::vector<double> &outp
             tmpBufferPos = 0;
         }
     }
-    this->bufferPos += input.size;
+    this->bufferPos += input.size();
     while (this->bufferPos >= this->delayInSamples){
         this->bufferPos -= this->delayInSamples;
     }
